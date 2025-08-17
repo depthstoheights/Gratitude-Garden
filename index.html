@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gratitude Garden</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 25%, #fecfef 75%, #ff9a9e 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      animation: backgroundShift 20s ease-in-out infinite;
+    }
+    
+    @keyframes backgroundShift {
+      0%, 100% { background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 25%, #fecfef 75%, #ff9a9e 100%); }
+      25% { background: linear-gradient(45deg, #a8edea 0%, #fed6e3 25%, #fed6e3 75%, #a8edea 100%); }
+      50% { background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 25%, #fcb69f 75%, #ffecd2 100%); }
+      75% { background: linear-gradient(45deg, #d299c2 0%, #fef9d7 25%, #fef9d7 75%, #d299c2 100%); }
+    }
+    
+    .screen { 
+      display: none; 
+      padding: 30px 20px; 
+      max-width: 700px; 
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      margin-top: 20px;
+      margin-bottom: 100px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .active { display: block; animation: slideIn 0.8s ease-out; }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .nav-bar { 
+      position: fixed; 
+      bottom: 0; 
+      width: 100%; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff; 
+      padding: 15px; 
+      display: flex; 
+      justify-content: space-around;
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+      border-top: 3px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    button { 
+      padding: 12px 25px; 
+      border: none; 
+      border-radius: 50px; 
+      margin: 8px; 
+      cursor: pointer; 
+      font-size: 16px;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+      color: white;
+      transition: all 0.4s ease;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-button {
+      background: rgba(255, 255, 255, 0.2) !important;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .nav-button:hover {
+      background: rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    #infoBox { 
+      display: none; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: 3px solid #fff; 
+      padding: 25px; 
+      margin: 20px; 
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      max-width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+    }
+    
+    .verse {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+      border: 3px solid #fdcb6e;
+      padding: 20px;
+      margin: 25px 0;
+      font-style: italic;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      color: #2d3436;
+      font-size: 18px;
+    }
+    
+    .gratitude-card {
+      background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+      border: 3px solid #00b894;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .gratitude-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .gratitude-input {
+      width: 100%;
+      padding: 15px;
+      border: 3px solid #ddd;
+      border-radius: 15px;
+      font-size: 16px;
+      margin: 10px 0;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+    }
+    
+    .gratitude-input:focus {
+      outline: none;
+      border-color: #00b894;
+      box-shadow: 0 0 20px rgba(0, 184, 148, 0.3);
+    }
+    
+    .flower {
+      display: inline-block;
+      font-size: 3em;
+      margin: 10px;
+      animation: grow 2s ease-in-out;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .flower:hover {
+      transform: scale(1.2) rotate(10deg);
+    }
+    
+    @keyframes grow {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      50% { transform: scale(1.2) rotate(180deg); opacity: 0.7; }
+      100% { transform: scale(1) rotate(360deg); opacity: 1; }
+    }
+    
+    .garden {
+      text-align: center;
+      min-height: 200px;
+      background: linear-gradient(to bottom, #74b9ff 0%, #0984e3 50%, #00cec9 100%);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .garden::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(to right, #00b894, #00cec9, #00b894);
+      border-radius: 0 0 20px 20px;
+    }
+    
+    h1 { 
+      color: #2d3436; 
+      margin-bottom: 20px; 
+      text-align: center;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: titlePulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes titlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    h2 { 
+      color: #636e72; 
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+    }
+    
+    .sharing-section {
+      background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+      padding: 20px;
+      border-radius: 20px;
+      margin: 20px 0;
+      border: 3px solid #e84393;
+    }
+    
+    .share-button {
+      background: linear-gradient(135deg, #00cec9 0%, #00b894 100%) !important;
+      margin: 5px;
+    }
+    
+    .daily-counter {
+      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color: white;
+      padding: 15px;
+      border-radius: 15px;
+      text-align: center;
+      margin: 20px 0;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .heart {
+      position: absolute;
+      color: rgba(255, 182, 193, 0.6);
+      font-size: 2em;
+      animation: floatUp 6s linear infinite;
+    }
+    
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-hearts" id="floatingHearts"></div>
+  
+  <!-- Opening Hook -->
+  <div id="screen1" class="screen active">
+    <h1>🌸 Welcome to Your Gratitude Garden 🌸</h1>
+    <p style="font-size: 20px; text-align: center; margin-bottom: 20px;">What if gratitude could transform your heart and grow something beautiful?</p>
+    
+    <div class="verse">
+      "Give thanks in all circumstances; for this is God's will for you in Christ Jesus."<br>
+      <strong>- 1 Thessalonians 5:18</strong>
+    </div>
+    
+    <p style="text-align: center; font-size: 18px;">Every act of gratitude plants a seed. Every thanksgiving grows a flower. Let's cultivate a garden of praise together!</p>
+    
+    <div class="daily-counter" id="dailyCounter">
+      🌱 Today's Gratitude Seeds: 0
+    </div>
+    
+    <button onclick="nextScreen()" style="font-size: 18px; padding: 15px 30px;">Start Growing 🌱</button>
+  </div>
+
+  <!-- Gratitude Exercise 1: Three Good Things -->
+  <div id="screen2" class="screen">
+    <h2>🌻 Three Sacred Gifts</h2>
+    <p style="text-align: center; margin-bottom: 20px;">God gives us countless gifts each day. Let's notice three beautiful ones:</p>
+    
+    <div class="verse">
+      "Every good and perfect gift is from above, coming down from the Father of the heavenly lights."<br>
+      <strong>- James 1:17</strong>
+    </div>
+    
+    <div class="gratitude-card">
+      <h3>🎁 Gift #1: Something Beautiful I Saw Today</h3>
+      <textarea class="gratitude-input" id="gift1" placeholder="A sunset, a smile, a flower, someone's kindness..." rows="3"></textarea>
+    </div>
+    
+    <div class="gratitude-card">
+      <h3>🤗 Gift #2: Someone Who Blessed My Life</h3>
+      <textarea class="gratitude-input" id="gift2" placeholder="A family member, friend, stranger, or even God himself..." rows="3"></textarea>
+    </div>
+    
+    <div class="gratitude-card">
+      <h3>✨ Gift #3: A Simple Joy That Made Me Smile</h3>
+      <textarea class="gratitude-input" id="gift3" placeholder="Coffee, laughter, music, a moment of peace..." rows="3"></textarea>
+    </div>
+    
+    <button onclick="plantFlowers()" id="plantBtn">Plant These Gifts in My Garden 🌸</button>
+    <button onclick="nextScreen()">Continue Growing</button>
+  </div>
+
+  <!-- Visual Garden Display -->
+  <div id="screen3" class="screen">
+    <h2>🌺 Your Growing Garden 🌺</h2>
+    <p style="text-align: center;">Watch your gratitude bloom! Each flower represents a gift you've recognized from God.</p>
+    
+    <div class="garden" id="garden">
+      <p style="color: white; font-size: 18px; margin-bottom: 20px;">Your Garden of Praise</p>
+      <div id="flowerGarden">
+        <!-- Flowers will appear here -->
+      </div>
+    </div>
+    
+    <div class="verse">
+      "The flowers appear on the earth; the time of singing has come."<br>
+      <strong>- Song of Songs 2:12</strong>
+    </div>
+    
+    <div class="sharing-section">
+      <h3 style="text-align: center; margin-bottom: 15px;">💕 Share Your Garden</h3>
+      <p style="text-align: center;">Spread the joy! Share your gratitude practice:</p>
+      <div style="text-align: center;">
+        <button class="share-button" onclick="shareGratitude('text')">📱 Share via Text</button>
+        <button class="share-button" onclick="shareGratitude('social')">📸 Share on Social</button>
+        <button class="share-button" onclick="shareGratitude('email')">📧 Email a Friend</button>
+      </div>
+    </div>
+    
+    <button onclick="nextScreen()">Deeper Practice</button>
+  </div>
+
+  <!-- Advanced Gratitude Exercise -->
+  <div id="screen4" class="screen">
+    <h2>🙏 Heart of Thanksgiving</h2>
+    <p style="text-align: center;">Let's go deeper. What is God teaching you through gratitude?</p>
+    
+    <div class="verse">
+      "Let the peace of Christ rule in your hearts, since as members of one body you were called to peace. And be thankful."<br>
+      <strong>- Colossians 3:15</strong>
+    </div>
+    
+    <div class="gratitude-card">
+      <h3>🔥 A Challenge That God Used for Good</h3>
+      <textarea class="gratitude-input" id="challenge" placeholder="Even difficulties can become gifts when we see God's hand..." rows="4"></textarea>
+    </div>
+    
+    <div class="gratitude-card">
+      <h3>🕊️ How Gratitude Changed My Heart Today</h3>
+      <textarea class="gratitude-input" id="heartChange" placeholder="What shift did you notice as you practiced thanksgiving?" rows="4"></textarea>
+    </div>
+    
+    <div class="gratitude-card">
+      <h3>✏️ A Prayer of Thanks to God</h3>
+      <textarea class="gratitude-input" id="prayer" placeholder="Dear God, thank you for..." rows="4"></textarea>
+    </div>
+    
+    <button onclick="completeSession()">Complete My Practice 🌈</button>
+  </div>
+
+  <!-- Wrap-up and Encouragement -->
+  <div id="screen5" class="screen">
+    <h2>🌟 Your Heart is Growing! 🌟</h2>
+    
+    <div class="daily-counter" style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);">
+      🌸 Session Complete! Total Gratitude Seeds: <span id="totalSeeds">0</span>
+    </div>
+    
+    <div class="verse">
+      "Praise the Lord, my soul; all my inmost being, praise his holy name. Praise the Lord, my soul, and forget not all his benefits."<br>
+      <strong>- Psalm 103:1-2</strong>
+    </div>
+    
+    <p style="text-align: center; font-size: 18px; margin: 25px 0;">
+      Gratitude isn't just a feeling—it's a practice that transforms our hearts to see God's goodness everywhere. 
+      You've planted seeds of thanksgiving that will grow in your life!
+    </p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <p><strong>💡 Keep Growing:</strong></p>
+      <p>📖 Read one Psalm of praise<br>
+      🎵 Listen to worship music<br>
+      💬 Tell someone what you're grateful for<br>
+      📝 Start a gratitude journal</p>
+    </div>
+    
+    <button onclick="goHome()">Start New Session 🌱</button>
+  </div>
+
+  <!-- About Section -->
+  <div id="screen6" class="screen">
+    <h2>About Gratitude Garden</h2>
+    <p style="text-align: center;"><strong>Made by Justin<br>Depths to Heights</strong></p>
+    <p style="text-align: center;"><a href="https://depthstoheights.org" target="_blank" style="color: #0984e3; text-decoration: none; font-weight: bold;">depthstoheights.org</a></p>
+    
+    <div style="background: #fff3cd; border: 3px solid #ffeaa7; padding: 20px; border-radius: 15px; margin: 25px 0;">
+      <p style="text-align: center;"><strong>⚠️ Crisis Support:</strong></p>
+      <p style="text-align: center;">If you are in crisis, please contact your local helpline for immediate support.</p>
+    </div>
+    
+    <div style="background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%); padding: 20px; border-radius: 15px; margin: 25px 0; border: 3px solid #00b894;">
+      <p style="text-align: center; font-weight: bold;">💚 Support This Ministry</p>
+      <p style="text-align: center;">If this app encouraged you, consider supporting the work of Depths to Heights. Your donation helps us create more free, life-giving tools.</p>
+      <p style="text-align: center;"><a href="https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U" target="_blank" style="color: #00b894; text-decoration: none; font-weight: bold;">💝 Donate Here</a></p>
+    </div>
+    
+    <p style="text-align: center;"><a href="mailto:depthstoheights@gmail.com" style="color: #0984e3; text-decoration: none;">📧 depthstoheights@gmail.com</a></p>
+    <button onclick="goHome()">Return to Garden 🌸</button>
+  </div>
+
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <button class="nav-button" onclick="goHome()">🏠 Home</button>
+    <button class="nav-button" onclick="jumpToScreen(2)">🌻 Plant</button>
+    <button class="nav-button" onclick="jumpToScreen(3)">🌺 Garden</button>
+    <button class="nav-button" onclick="toggleInfo()">ℹ️ Info</button>
+  </div>
+
+  <!-- Info Box -->
+  <div id="infoBox">
+    <h3>🌸 How to Use Gratitude Garden</h3>
+    <p><strong>🎯 Purpose:</strong> Build a daily gratitude practice rooted in biblical thanksgiving.</p>
+    <p><strong>🌱 How to Use:</strong></p>
+    <ul style="text-align: left; margin: 15px 0;">
+      <li>Plant gratitude "seeds" by recognizing God's gifts</li>
+      <li>Watch your garden grow with each thanksgiving</li>
+      <li>Share your practice to encourage others</li>
+      <li>Use daily for heart transformation</li>
+    </ul>
+    <p><strong>📱 Install on Phone:</strong> iPhone: Safari → Share → "Add to Home Screen". Android: Chrome → Menu → "Add to Home Screen".</p>
+    <p><strong>🎵 Tips:</strong> Use with worship music for deeper experience. Journal your responses for lasting impact.</p>
+    <button onclick="toggleInfo()">Close</button>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="gentle-worship.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    let current = 1;
+    let totalGratitudeSeeds = 0;
+    let dailySeeds = 0;
+    let flowersInGarden = [];
+    
+    const flowerEmojis = ['🌸', '🌺', '🌻', '🌷', '🌹', '🏵️', '🌼', '💐', '🌾', '🌿'];
+    
+    function nextScreen() {
+      document.getElementById("screen" + current).classList.remove("active");
+      current++;
+      if (current > 5) current = 1;
+      document.getElementById("screen" + current).classList.add("active");
+    }
+    
+    function jumpToScreen(screenNum) {
+      document.getElementById("screen" + current).classList.remove("active");
+      current = screenNum;
+      document.getElementById("screen" + current).classList.add("active");
+    }
+    
+    function goHome() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      current = 1;
+      document.getElementById("screen1").classList.add("active");
+      updateDailyCounter();
+    }
+    
+    function toggleInfo() {
+      const info = document.getElementById("infoBox");
+      info.style.display = (info.style.display === "block") ? "none" : "block";
+    }
+    
+    function plantFlowers() {
+      const gift1 = document.getElementById("gift1").value.trim();
+      const gift2 = document.getElementById("gift2").value.trim();
+      const gift3 = document.getElementById("gift3").value.trim();
+      
+      if (gift1 || gift2 || gift3) {
+        if (gift1) addFlowerToGarden();
+        if (gift2) addFlowerToGarden();
+        if (gift3) addFlowerToGarden();
+        
+        const btn = document.getElementById("plantBtn");
+        btn.textContent = "🌸 Beautiful! Your garden is growing! 🌸";
+        btn.style.background = "linear-gradient(135deg, #00b894 0%, #00cec9 100%)";
+        
+        createFloatingHearts();
+      } else {
+        alert("💝 Please share at least one gift you're grateful for!");
+      }
+    }
+    
+    function addFlowerToGarden() {
+      dailySeeds++;
+      totalGratitudeSeeds++;
+      
+      const garden = document.getElementById("flowerGarden");
+      const flower = document.createElement("span");
+      flower.className = "flower";
+      flower.textContent = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+      
+      // Random positioning within garden
+      flower.style.position = "relative";
+      flower.style.display = "inline-block";
+      
+      garden.appendChild(flower);
+      flowersInGarden.push(flower);
+      
+      updateDailyCounter();
+    }
+    
+    function updateDailyCounter() {
+      document.getElementById("dailyCounter").textContent = `🌱 Today's Gratitude Seeds: ${dailySeeds}`;
+      const totalElement = document.getElementById("totalSeeds");
+      if (totalElement) {
+        totalElement.textContent = totalGratitudeSeeds;
+      }
+    }
+    
+    function completeSession() {
+      const challenge = document.getElementById("challenge").value.trim();
+      const heartChange = document.getElementById("heartChange").value.trim();
+      const prayer = document.getElementById("prayer").value.trim();
+      
+      if (challenge) addFlowerToGarden();
+      if (heartChange) addFlowerToGarden();
+      if (prayer) addFlowerToGarden();
+      
+      nextScreen();
+      createFloatingHearts();
+    }
+    
+    function shareGratitude(type) {
+      const gratitudeCount = dailySeeds;
+      let shareText = `🌸 I just completed a gratitude practice and planted ${gratitudeCount} seeds of thanksgiving! Grateful hearts see God's goodness everywhere. Try Gratitude Garden: [Your App URL] #Gratitude #Faith #Blessed`;
+      
+      if (type === 'text') {
+        if (navigator.share) {
+          navigator.share({
+            title: 'Gratitude Garden',
+            text: shareText,
+          });
+        } else {
+          navigator.clipboard.writeText(shareText);
+          alert("📱 Copied to clipboard! Share via text message.");
+        }
+      } else if (type === 'social') {
+        navigator.clipboard.writeText(shareText);
+        alert("📸 Copied to clipboard! Perfect for social media posts!");
+      } else if (type === 'email') {
+        const subject = "🌸 Growing Gratitude Together";
+        const body = `Hi!\n\nI wanted to share something beautiful with you. I just completed a gratitude practice that helped me recognize ${gratitudeCount} gifts from God today.\n\nGratitude is transforming my heart to see God's goodness everywhere. I thought you might enjoy trying this biblical gratitude practice too!\n\nCheck out Gratitude Garden: [Your App URL]\n\nBlessings,\n[Your name]`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    }
+    
+    function createFloatingHearts() {
+      const heartsContainer = document.getElementById("floatingHearts");
+      
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.textContent = "💖";
+          heart.style.left = Math.random() * 100 + "%";
+          heart.style.animationDelay = Math.random() * 2 + "s";
+          heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+          
+          heartsContainer.appendChild(heart);
+          
+          setTimeout(() => {
+            if (heart.parentNode) {
+              heart.parentNode.removeChild(heart);
+            }
+          }, 8000);
+        }, i * 200);
+      }
+    }
+    
+    // Initialize
+    updateDailyCounter();
+    
+    // Auto-create floating hearts periodically
+    setInterval(() => {
+      if (Math.random() < 0.3) {
+        createFloatingHearts();
+      }
+    }, 10000);
+  </script>
+</body>
+</html>

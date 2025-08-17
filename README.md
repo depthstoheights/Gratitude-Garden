@@ -1,56 +1,48 @@
-# Complete Learning Assessment System
+# Gratitude Garden
 
-**Personalized learning style assessment and dynamic study planner for optimized academic growth.**
+**Interactive devotional app for cultivating biblical gratitude through daily reflection and visual growth.**
 
-This interactive web app helps users identify their unique learning style and build a customized study schedule based on their strengths, goals, and available time. Designed for Depths to Heights Ministry, it supports intentional learning through faith-integrated productivity tools.
-
----
-
-## 🧠 Learning Style Assessment
-
-- ✅ 20-question comprehensive quiz covering:
-  - Visual
-  - Auditory
-  - Reading/Writing
-  - Kinesthetic modalities
-- 📊 Intelligent scoring algorithm calculates percentages across all styles
-- 🧭 Personalized results with detailed breakdowns and primary style identification
-- 💾 Progress saving — users can resume assessments if interrupted
+Gratitude Garden helps users build a consistent gratitude habit rooted in Scripture. Designed for all ages, this app blends spiritual reflection with playful interaction, encouraging users to recognize God’s goodness in everyday life.
 
 ---
 
-## 📅 Personalized Study Planner
+## 🌟 Key Features
 
-- 🗓️ Dynamic schedule generation based on:
-  - Available time
-  - Study goals
-  - Subjects and deadlines
-- 🎯 Learning style integration — study methods matched to assessment results
-- 🔄 Flexible planning for:
-  - Exam prep
-  - Skill building
-  - Daily review
-  - Project work
-- ⏱️ Time management optimization:
-  - Break scheduling
-  - Productivity tips
-  - Faith-based encouragement prompts
+- 🌱 Progressive gratitude exercises:  
+  - Start with 3 gifts  
+  - Watch your garden grow  
+  - Reflect deeply with scripture prompts
+
+- 🌸 Visual garden builder:  
+  - Interactive flower planting animations  
+  - Floating heart effects for positive reinforcement
+
+- 📤 Sharing options:  
+  - Share gratitude entries via text, social media, or email
+
+- 📊 Session tracking:  
+  - Seed counting system  
+  - Daily streaks and milestone celebrations
 
 ---
 
-## 🙏 Biblical Integration
+## 📖 Biblical Foundation
 
-Inspired by:
-- **Proverbs 4:7** — “Wisdom is supreme; therefore get wisdom. Though it cost all you have, get understanding.”
-- **Colossians 3:23** — “Whatever you do, work at it with all your heart, as working for the Lord…”
+- **1 Thessalonians 5:18** — “Give thanks in all circumstances…”  
+- **James 1:17** — “Every good and perfect gift is from above…”  
+- **Colossians 3:15** — “Let the peace of Christ rule in your hearts… and be thankful.”
 
-This tool encourages stewardship of time, intentional learning, and spiritual growth through disciplined study.
+This app encourages users to:
+- Recognize God as the source of all good gifts  
+- Practice daily thanksgiving for heart transformation  
+- Share blessings to uplift others  
+- Find God’s goodness even in challenges
 
 ---
 
 ## 🛠️ Technical Details
 
-- File: `learning-assessment-planner.html`  
+- File: `gratitude-garden.html`  
 - Format: Single-file HTML with embedded CSS/JS  
 - Responsive design for desktop and mobile  
 - Local storage for privacy and progress tracking  
@@ -74,5 +66,6 @@ For feedback, ministry collaboration, or digital outreach support:
 
 ---
 
-> “Teach us to number our days, that we may gain a heart of wisdom.” — Psalm 90:12
+> “Gratitude plants seeds of joy. Let your heart bloom.” 🌸
+
 
